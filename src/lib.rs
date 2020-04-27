@@ -4,7 +4,7 @@ use pyo3::prelude::*;
 use pyo3::wrap_pyfunction;
 
 #[pyfunction]
-fn launch_shortcut(shortcut: String) -> PyResult<bool> {
+pub fn launch_shortcut(shortcut: String) -> PyResult<bool> {
     println!("Attempting to launch: {}", shortcut);
     let _child = Command::new("cmd.exe")
         .arg("/C")
@@ -16,15 +16,14 @@ fn launch_shortcut(shortcut: String) -> PyResult<bool> {
 }
 
 #[pyfunction]
-fn launch_web(browser: String, url: String) -> PyResult<bool> {
+pub fn launch_web(browser: String, url: String, new: bool) -> PyResult<bool> {
     println!("Attempting to launch: {}", url);
 
     let _child = Command::new("cmd.exe")
         .arg("/C")
         .arg("start")
-        .arg("")
         .arg(browser)
-        .arg("")
+        .arg(if new == true { "--new-browser" } else { "" })
         .arg(url)
         .spawn()
         .expect("failed to launch browser");
@@ -33,7 +32,7 @@ fn launch_web(browser: String, url: String) -> PyResult<bool> {
 }
 
 #[pymodule]
-fn Launcher(py: Python, m: &PyModule) -> PyResult<()> {
+fn launcher(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_wrapped(wrap_pyfunction!(launch_shortcut))?;
     m.add_wrapped(wrap_pyfunction!(launch_web))?;
     Ok(())

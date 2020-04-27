@@ -1,11 +1,11 @@
 [package]
-name = "Launcher"
+name = "launcher"
 version = "0.1.0"
 authors = ["Jeremy <jere.arde@gmail.com>"]
 edition = "2018"
 
 [lib]
-name = "Launcher"
+name = "launcher"
 crate-type = ["cdylib"]
 
 [dependencies]
